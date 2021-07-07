@@ -8,4 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     use HasFactory;
+    protected $table = 'projects';
+    protected $fillable = [];
+
+    public function manager()
+    {
+        return $this->hasOne(User::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(Module::class);
+    }
+
+    public function document()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
