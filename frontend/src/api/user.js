@@ -1,24 +1,28 @@
 import request from '@/utils/request'
 
-export function login(data) {
-  return request({
-    url: '/vue-element-admin/user/login',
-    method: 'post',
-    data
-  })
+export async function login(params) {
+    const data = await request({
+        url: '/login',
+        method: 'post',
+        params
+    });
+    return data;
 }
 
-export function getInfo(token) {
-  return request({
-    url: '/vue-element-admin/user/info',
-    method: 'get',
-    params: { token }
-  })
+export async function getInfo(token) {
+    const data = await request({
+        url: '/user-info',
+        method: 'get',
+        params: { token }
+    });
+    return data;
 }
 
-export function logout() {
-  return request({
-    url: '/vue-element-admin/user/logout',
-    method: 'post'
-  })
+export async function logout(token) {
+    const data = await request({
+        url: '/logout',
+        method: 'get',
+        params: {token}
+    });
+    return data;
 }

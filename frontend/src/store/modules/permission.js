@@ -35,7 +35,15 @@ export function filterAsyncRoutes(routes, roles) {
 }
 
 const state = {
-  routes: [],
+  routes: [
+    {
+      path: "/",
+      hidden: false,
+      meta: {
+        title: "asdsad"
+      }
+    }
+  ],
   addRoutes: []
 }
 
