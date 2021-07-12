@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'App\Http\Controllers',],function(){
     Route::post('register', 'UserController@register');
+    Route::put('user/update/{id}', 'UserController@update');
+    Route::delete('user/delete/{id}', 'UserController@delete');
     Route::post('login', 'UserController@login');
     Route::get('users', 'UserController@allUser');
 });

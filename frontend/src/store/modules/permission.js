@@ -37,11 +37,10 @@ export function filterAsyncRoutes(routes, roles) {
 const state = {
   routes: [
     {
-      path: "/",
-      hidden: false,
-      meta: {
-        title: "asdsad"
-      }
+      path: 'index',
+      component: Document,
+      name: 'User',
+      meta: { title: 'User', icon: 'user', affix: true }
     }
   ],
   addRoutes: []
