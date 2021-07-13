@@ -22,9 +22,21 @@ class UserRepository extends BaseRepository implements InterfaceUserRepository
     {
         return $this->user->create($data);
     }
+
+    public function update($id, $data = [])
+    {
+        $record = $this->user->findOrFail($id);
+ 
+        return $record->update($data);
+    }
  
     public function find($id)
     {
         return $this->user->find($id);
+    }
+
+    public function delete($id)
+    {
+        return $this->user->destroy($id);
     }
 }

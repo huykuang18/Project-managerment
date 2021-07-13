@@ -5,7 +5,7 @@ import router, { resetRouter } from '@/router'
 const state = {
     token: getToken(),
     name: '',
-    // avatar: '',
+    avatar: '',
     // introduction: '',
     roles: []
 }
@@ -21,9 +21,9 @@ const mutations = {
     SET_NAME: (state, name) => {
         state.name = name
     },
-    // SET_AVATAR: (state, avatar) => {
-    //     state.avatar = avatar
-    // },
+    SET_AVATAR: (state, avatar) => {
+        state.avatar = avatar
+    },
     SET_ROLES: (state, roles) => {
         state.roles = roles
     }
@@ -45,7 +45,7 @@ const actions = {
         }
         commit('SET_ROLES', data.data.role);
         commit('SET_NAME', data.data.name);
-        // commit('SET_AVATAR', avatar);
+        commit('SET_AVATAR', data.data.avatar);
         // commit('SET_INTRODUCTION', introduction);
     },
 
