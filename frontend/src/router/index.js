@@ -121,7 +121,21 @@ export const constantRoutes = [
         meta: { title: 'Profile', icon: 'user', noCache: true }
       }
     ]
-  }
+  },
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/index',
+    hidden: false,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/users/index'),
+        name: 'Users',
+        meta: { title: 'Người dùng', icon: 'user', roles: ['admin'] }
+      }
+    ]
+  },
 ]
 
 /**

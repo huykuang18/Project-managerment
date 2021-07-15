@@ -10,7 +10,8 @@ class BaseController extends Controller
     {
         return response()->json([
             "message" => $message,
-            "data" => $data 
+            "data" => $data,
+            // "total" => count($data),
         ], $status);
     }   
 }

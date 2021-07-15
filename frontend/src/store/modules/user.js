@@ -6,7 +6,7 @@ const state = {
     token: getToken(),
     name: '',
     avatar: '',
-    // introduction: '',
+    username: '',
     roles: []
 }
 
@@ -15,9 +15,9 @@ const mutations = {
         state.token = token;
         setToken(token);
     },
-    // SET_INTRODUCTION: (state, introduction) => {
-    //     state.introduction = introduction
-    // },
+    SET_USERNAME: (state, username) => {
+        state.username = username
+    },
     SET_NAME: (state, name) => {
         state.name = name
     },
@@ -46,7 +46,7 @@ const actions = {
         commit('SET_ROLES', data.data.role);
         commit('SET_NAME', data.data.name);
         commit('SET_AVATAR', data.data.avatar);
-        // commit('SET_INTRODUCTION', introduction);
+        commit('SET_USERNAME', data.data.username);
     },
 
     // user logout

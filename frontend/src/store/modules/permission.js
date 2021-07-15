@@ -1,4 +1,9 @@
 import { asyncRoutes, constantRoutes } from '@/router'
+import Vue from 'vue'
+import Router from 'vue-router'
+
+Vue.use(Router)
+
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -37,10 +42,16 @@ export function filterAsyncRoutes(routes, roles) {
 const state = {
   routes: [
     {
-      path: 'index',
-      component: Document,
+      path: 'user',
+      component: '',
       name: 'User',
-      meta: { title: 'User', icon: 'user', affix: true }
+      meta: { title: 'Quản lý người dùng', icon: 'user'},
+    },
+    {
+      path: 'project',
+      component: '',
+      name: 'Project',
+      meta: { title: 'Quản lý dự án tham gia', icon: 'skill'}
     }
   ],
   addRoutes: []
