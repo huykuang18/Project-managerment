@@ -43,10 +43,10 @@ class UserRepository extends BaseRepository implements InterfaceUserRepository
 
     public function filter($params)
     {   
-        $limit = $params['limit'];
-        $sort = $params['sort'] ?? null;
-        $name = $params['name'] ?? null;
-        $role = $params['role'] ?? null;
+        $limit = $params["limit"] ?? null;
+        $sort = $params["sort"] ?? null;
+        $name = $params["name"] ?? null;
+        $role = $params["role"] ?? null;
         $users = $this->user::Where([['name', 'like', "%{$name}%"],['role','like',"%{$role}%"]]);
         if ($sort) {
             $odb = substr($sort, -3, 1);

@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Repositories\User\UserRepository;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use App\Constants\ResponseCode;
+use App\Http\Requests\User\UserPostRequest;
+use App\Http\Requests\User\UserPutRequest;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -24,56 +22,66 @@ class UserController extends BaseController
         $this->resCode = $resCode;
     }
 
+    /**
+     * Get all user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
     public function allUser(Request $request)
     {
         $users = $this->userRepository->filter($request->all());
         return $this->sendSuccess(__('message.LIST'), $users, $this->resCode::OK);
     }
 
-    public function register(Request $request)
+    /**
+     * Create a new user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function register(UserPostRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'username' => 'unique:users|required',
-            'name' => 'required',
-            'password' => 'required|min:6',
-            'repassword' => 'required|same:password',
-        ]);
-        if ($validator->fails()) {
-            return $this->sendSuccess(__('message.ERR'), $validator->errors(), $this->resCode::NOT_FOUND);
-        }
-        $name = $request->name;
-        $username = $request->username;
-        $password = $request->password;
-        $role = $request->role;
+        $validated = $request->validated();
+        $name = $validated["name"];
+        $username = $validated["username"];
+        $password = $validated["password"];
+        $role = $validated["role"];
         $user = $this->userRepository->create([
             'name' => $name,
             'username' => $username,
             'password' => Hash::make($password),
             'role' => $role
         ]);
-        return $this->sendSuccess(__('message.USER_CREATED'), $user, $this->resCode::OK);
+        return $this->sendSuccess(__('message.CREATED'), $user, $this->resCode::OK);
 
     }
 
-    public function update($id, Request $request)
+    /**
+     * Put data to update a user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function update($id, UserPutRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'role' => 'required|alpha',
-        ]);
-        if ($validator->fails()) {
-            return $this->sendSuccess(__('message.ERR'), $validator->errors(), $this->resCode::NOT_FOUND);
-        }
-        $name = $request->name;
-        $role = $request->role;
+        $validated = $request->validated();
+        $name = $validated["name"];
+        $role = $validated["role"];
         $user = $this->userRepository->update($id, [
             'name' => $name,
             'role' => $role,
         ]);
-        return $this->sendSuccess(__('message.USER_UPDATED'), $user, $this->resCode::OK);
+        return $this->sendSuccess(__('message.UPDATED'), $user, $this->resCode::OK);
 
     }
 
+    /**
+     * Post and check data to login to home page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
     public function login(Request $request)
     {
         $credentials = $request->only('username', 'password');
@@ -88,18 +96,36 @@ class UserController extends BaseController
         return $this->sendSuccess(__('message.TOKEN_SUCCESS'), compact('token'), $this->resCode::OK);
     }
 
+    /**
+     * Get the user infomation.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
     public function getUserInfo(Request $request)
     {
         $user = JWTAuth::toUser($request->token);
         return $this->sendSuccess('Information', $user, $this->resCode::OK);
     }
 
+    /**
+     * Delete a user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
     public function delete($id)
     {
         $user = $this->userRepository->delete($id);
         return $this->sendSuccess(__('message.DELETED'), $user, $this->resCode::OK);
     }
 
+    /**
+     * Remove token to logout user account.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
     function logout(Request $request)
     {
         $this->validate($request, [
