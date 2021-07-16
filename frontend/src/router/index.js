@@ -135,7 +135,7 @@ export const constantRoutes = [
         meta: { title: 'Người dùng', icon: 'user', roles: ['admin'] }
       }
     ]
-  },
+  }
 ]
 
 /**

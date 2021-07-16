@@ -4,7 +4,6 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-
 /**
  * Use meta.role to determine if the current user has permission
  * @param roles
@@ -25,7 +24,6 @@ function hasPermission(roles, route) {
  */
 export function filterAsyncRoutes(routes, roles) {
   const res = []
-
   routes.forEach(route => {
     const tmp = { ...route }
     if (hasPermission(roles, tmp)) {
@@ -45,13 +43,13 @@ const state = {
       path: 'user',
       component: '',
       name: 'User',
-      meta: { title: 'Quản lý người dùng', icon: 'user'},
+      meta: { title: 'Quản lý người dùng', icon: 'user' }
     },
     {
       path: 'project',
       component: '',
       name: 'Project',
-      meta: { title: 'Quản lý dự án tham gia', icon: 'skill'}
+      meta: { title: 'Quản lý dự án tham gia', icon: 'skill' }
     }
   ],
   addRoutes: []
