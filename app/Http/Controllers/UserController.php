@@ -24,10 +24,10 @@ class UserController extends BaseController
         $this->resCode = $resCode;
     }
 
-    public function allUser()
+    public function allUser(Request $request)
     {
-        $users = $this->userRepository->all();
-        return $this->sendSuccess('All user', $users, $this->resCode::OK);
+        $users = $this->userRepository->filter($request->all());
+        return $this->sendSuccess(__('message.LIST'), $users, $this->resCode::OK);
     }
 
     public function register(Request $request)
@@ -39,15 +39,17 @@ class UserController extends BaseController
             'repassword' => 'required|same:password',
         ]);
         if ($validator->fails()) {
-            return $this->sendSuccess('Error', $validator->errors(), $this->resCode::NOT_FOUND);
+            return $this->sendSuccess(__('message.ERR'), $validator->errors(), $this->resCode::NOT_FOUND);
         }
         $name = $request->name;
         $username = $request->username;
         $password = $request->password;
+        $role = $request->role;
         $user = $this->userRepository->create([
             'name' => $name,
             'username' => $username,
-            'password' => Hash::make($password)
+            'password' => Hash::make($password),
+            'role' => $role
         ]);
         return $this->sendSuccess(__('message.USER_CREATED'), $user, $this->resCode::OK);
 
@@ -58,21 +60,15 @@ class UserController extends BaseController
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'role' => 'required|alpha',
-            'password' => 'required|min:6',
-            'repassword' => 'required|same:password',
         ]);
         if ($validator->fails()) {
-            return $this->sendSuccess('Error', $validator->errors(), $this->resCode::NOT_FOUND);
+            return $this->sendSuccess(__('message.ERR'), $validator->errors(), $this->resCode::NOT_FOUND);
         }
         $name = $request->name;
-        $avatar = $request->avatar;
         $role = $request->role;
-        $password = $request->password;
         $user = $this->userRepository->update($id, [
             'name' => $name,
             'role' => $role,
-            'avatar' => $avatar,
-            'password' => Hash::make($password)
         ]);
         return $this->sendSuccess(__('message.USER_UPDATED'), $user, $this->resCode::OK);
 

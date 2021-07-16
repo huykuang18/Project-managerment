@@ -63,7 +63,7 @@ export default {
       default: () => {
         return {
           name: '',
-          email: '',
+          username: '',
           avatar: '',
           role: ''
         }

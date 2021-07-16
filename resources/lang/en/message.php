@@ -10,4 +10,6 @@ return [
     'LOGOUT_SUCCESS' => 'Đăng xuất thành công.',
     'LOGOUT_FAILED' => 'Xin lỗi, tài khoản chưa thể đăng xuất.',
     'DELETED' => 'Xoá thành công.',
+    'ERR' => 'Lỗi',
+    'LIST' => 'Danh sách',
 ];
