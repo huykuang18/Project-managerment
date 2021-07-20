@@ -9,7 +9,17 @@ class Project extends Model
 {
     use HasFactory;
     protected $table = 'projects';
-    protected $fillable = [];
+    protected $fillable = [
+        'project_name',
+        'manager_id',
+        'customer',
+        'description',
+        'date_start',
+        'date_end',
+        'intend_time',
+        'dev_quantity',
+        'test_quantity'
+    ];
 
     public function manager()
     {
