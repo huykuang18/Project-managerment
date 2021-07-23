@@ -24,8 +24,7 @@ class ProjectPostRequest extends FormRequest
     public function rules()
     {
         return [
-            'project_name' => 'unique:projects|required',
-            'manager' => 'required',
+            'project_name' => 'required',
             'customer' => 'required',
             'description' => 'required',
             'date_start' => 'required',
@@ -37,7 +36,6 @@ class ProjectPostRequest extends FormRequest
     {
         return [
             'project_name' => 'Tên dự án',
-            'manager' => 'Người quản lý',
             'customer' => 'Khách hàng',
             'description' => 'Mô tả dự án',
             'date_start' => 'Ngày bắt đầu',

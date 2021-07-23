@@ -14,9 +14,11 @@ class UserRepository extends BaseRepository implements InterfaceUserRepository
         $this->user = $user;
     }
 
-    public function all()
+    public function allNotIn($params)
     {
-        return $this->user->get();
+        $project_id = $params["project_id"];
+        $users = $this->user::join('project_user','users.id','=','project_user.user_id')->where('project_id',$project_id)->get('users.id');
+        return $this->user::whereNotIn('id',$users)->where('role','!=','admin')->orderBy('role','asc')->orderBy('username','asc')->get();
     }
 
     public function create($data = [])
@@ -56,7 +58,6 @@ class UserRepository extends BaseRepository implements InterfaceUserRepository
             } else {
                 $users = $users->orderBy($column, 'desc');
             }
-            
         }
         return $users->paginate($limit);
     }

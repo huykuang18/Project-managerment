@@ -40,6 +40,12 @@ export function filterAsyncRoutes(routes, roles) {
 const state = {
   routes: [
     {
+      path: '/',
+      component: '',
+      name: 'Dashboard',
+      meta: { title: 'Dashboard', icon: 'dashboard' }
+    },
+    {
       path: 'user',
       component: '',
       name: 'User',
