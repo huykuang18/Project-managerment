@@ -25,7 +25,6 @@ class ProjectPutRequest extends FormRequest
     {
         return [
             'project_name' => 'required',
-            'customer' => 'required',
             'description' => 'required',
             'date_start' => 'required',
             'date_end' => 'required',
@@ -36,7 +35,6 @@ class ProjectPutRequest extends FormRequest
     {
         return [
             'project_name' => 'Tên dự án',
-            'customer' => 'Khách hàng',
             'description' => 'Mô tả dự án',
             'date_start' => 'Ngày bắt đầu',
             'date_end' => 'Ngày kết thúc',

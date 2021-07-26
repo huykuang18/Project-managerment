@@ -28,9 +28,15 @@ class UserController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function allUser(Request $request)
+    public function filterUser(Request $request)
     {
         $users = $this->userRepository->filter($request->all());
+        return $this->sendSuccess(__('message.LIST'), $users, $this->resCode::OK);
+    }
+
+    public function allUser(Request $request)
+    {
+        $users = $this->userRepository->allNotIn($request->all());
         return $this->sendSuccess(__('message.LIST'), $users, $this->resCode::OK);
     }
 

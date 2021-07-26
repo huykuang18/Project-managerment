@@ -9,6 +9,7 @@ use App\Http\Requests\Project\ProjectPostRequest;
 use App\Http\Requests\Project\ProjectPutRequest;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends BaseController
 {
@@ -55,7 +56,7 @@ class ProjectController extends BaseController
     {
         $validated = $request->validated();
         $project_name = $validated["project_name"];
-        $manager = $validated["manager"];
+        $manager = Auth::id();
         $customer = $validated["customer"];
         $description = $validated["description"];
         $date_start = $validated["date_start"];
@@ -72,6 +73,8 @@ class ProjectController extends BaseController
             'dev_quantity' => 0,
             'test_quantity' => 0
         ]);
+        $new_project = $this->projectRepository->new();
+        $new_project->users()->attach($manager);
         return $this->sendSuccess(__('message.CREATED'), $project, ResponseCode::OK);
     }
 
@@ -85,20 +88,16 @@ class ProjectController extends BaseController
     {
         $validated = $request->validated();
         $project_name = $validated["project_name"];
-        $customer = $validated["customer"];
         $description = $validated["description"];
         $date_start = $validated["date_start"];
         $date_end = $validated["date_end"];
         $intend_time = round((strtotime($date_end) - strtotime($date_start)) / (30 * 60 * 60 * 24), 0);
         $project = $this->projectRepository->update($request->all(), [
             'project_name' => $project_name,
-            'customer' => $customer,
             'description' => $description,
             'date_start' => $date_start,
             'date_end' => $date_end,
-            'intend_time' => $intend_time,
-            'dev_quantity' => 0,
-            'test_quantity' => 0
+            'intend_time' => $intend_time
         ]);
         return $this->sendSuccess(__('message.UPDATED'), $project, ResponseCode::OK);
     }
@@ -111,6 +110,8 @@ class ProjectController extends BaseController
      */
     public function delete($id)
     {
+        $user = $this->userRepository->find(Auth::id());
+        $user->projects()->detach($id);
         $project = $this->projectRepository->delete($id);
         return $this->sendSuccess(__('message.DELETED'), $project, ResponseCode::OK);
     }
@@ -132,7 +133,7 @@ class ProjectController extends BaseController
             'dev_quantity' => $project->dev_quantity + $dev,
             'test_quantity' => $project->test_quantity + $test
         ]);
-        return $this->sendSuccess(__('message.CREATED'), $project, ResponseCode::OK);
+        return $this->sendSuccess(__('message.CREATED'), $user, ResponseCode::OK);
     }
 
     /**
@@ -141,13 +142,13 @@ class ProjectController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function removeMember($id, Request $request)
+    public function removeMember($member_id, Request $request)
     {
         $project = $this->projectRepository->find($request->all());
-        $user = $this->userRepository->find($id);
-        $dev = $user['role'] === 'developer' ? 1 : 0;
-        $test = $user['role'] === 'tester' ? 1 : 0;
-        $project->users()->detach($id);
+        $user = $this->userRepository->find($member_id);
+        $dev = $user['role'] === __('message.ROLE_DEVELOPER') ? 1 : 0;
+        $test = $user['role'] === __('message.ROLE_TESTER') ? 1 : 0;
+        $project->users()->detach($member_id);
         $this->projectRepository->update($request->all(), [
             'dev_quantity' => $project->dev_quantity - $dev,
             'test_quantity' => $project->test_quantity - $test

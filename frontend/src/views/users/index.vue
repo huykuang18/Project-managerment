@@ -46,7 +46,7 @@
       >
         Thêm
       </el-button>
-      <el-button
+      <!-- <el-button
         v-waves
         :loading="downloadLoading"
         class="filter-item"
@@ -55,7 +55,7 @@
         @click="handleDownload"
       >
         Xuất file
-      </el-button>
+      </el-button> -->
     </div>
 
     <el-table
@@ -87,7 +87,7 @@
       </el-table-column>
       <el-table-column label="Họ tên" min-width="150px">
         <template slot-scope="{ row }">
-          <span>{{ row.name }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Vai trò" class-name="status-col" width="100">
@@ -197,7 +197,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false"> Cancel </el-button>
+        <el-button @click="dialogFormVisible = false"> Huỷ bỏ </el-button>
         <el-button
           type="primary"
           @click="dialogStatus === 'create' ? createData() : updateData()"
@@ -238,8 +238,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 const calendarRoleOptions = [
   { key: 'AD', display_name: 'admin' },
   { key: 'DV', display_name: 'developer' },
-  { key: 'TS', display_name: 'tester' },
-  { key: 'VS', display_name: 'visitor' }
+  { key: 'TS', display_name: 'tester' }
 ]
 
 const calendarRoleKeyValue = calendarRoleOptions.reduce((acc, cur) => {
@@ -293,7 +292,7 @@ export default {
         name: '',
         username: '',
         password: '',
-        role: 'visitor'
+        role: 'developer'
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -368,7 +367,7 @@ export default {
         importance: 1,
         remark: '',
         name: '',
-        role: 'visitor',
+        role: '',
         username: '',
         password: ''
       }

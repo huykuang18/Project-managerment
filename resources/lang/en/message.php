@@ -12,5 +12,6 @@ return [
     'ERR' => 'Lỗi',
     'LIST' => 'Danh sách',
     'ROLE_DEVELOPER' => 'developer',
-    'ROLE_TESTER' => 'tester'
+    'ROLE_TESTER' => 'tester',
+    'ROLE_ADMIN' => 'admin'
 ];

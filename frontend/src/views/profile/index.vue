@@ -46,6 +46,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'id',
       'name',
       'username',
       'avatar',
@@ -58,6 +59,7 @@ export default {
   methods: {
     getUser() {
       this.user = {
+        id: this.id,
         name: this.name,
         role: this.roles,
         username: this.username,
