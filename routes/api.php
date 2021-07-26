@@ -31,6 +31,12 @@ Route::group(['namespace' => 'App\Http\Controllers',],function(){
     Route::get('project/members', 'ProjectController@getMember');
     Route::post('project/member/add', 'ProjectController@addMember');
     Route::delete('project/member/delete/{id}', 'ProjectController@removeMember');
+
+    /**Item */
+    Route::get('items', 'ItemController@getItem');
+    Route::post('item/create/{project_id}', 'ItemController@createItem');
+    Route::put('item/update', 'ItemController@update');
+    Route::delete('item/delete/{id}', 'ItemController@delete');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'App\Http\Controllers'], function () {
