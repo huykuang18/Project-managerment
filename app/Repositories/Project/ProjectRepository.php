@@ -25,13 +25,12 @@ class ProjectRepository extends BaseRepository implements InterfaceProjectReposi
 
     public function filter($params)
     {
-        $limit = $params["limit"] ?? null;
         $sort = $params["sort"] ?? null;
-        $project_name = $params["project_name"] ?? null;
+        $projectName = $params["project_name"] ?? null;
         $user_id = Auth::id();
         $projects = $this->project::join('project_user', 'projects.id', '=', 'project_user.project_id')
-            ->Where([['project_user.user_id', $user_id],['project_name', 'like', "%{$project_name}%"]])
-            ->orwhere([['manager_id', $user_id],['project_name', 'like', "%{$project_name}%"]])
+            ->Where([['project_user.user_id', $user_id],['project_name', 'like', "%{$projectName}%"]])
+            ->orwhere([['manager_id', $user_id],['project_name', 'like', "%{$projectName}%"]])
             ->select('projects.*')
             ->groupBy('projects.id');
         $odb = substr($sort, -3, 1);
@@ -44,10 +43,9 @@ class ProjectRepository extends BaseRepository implements InterfaceProjectReposi
         return $projects->get();
     }
 
-    public function detail($params)
+    public function detail($projectId)
     {
-        $project_id = $params["project_id"];
-        $members = $this->project->where('id', $project_id)->with(array('users' => function ($query) {
+        $members = $this->project->where('id', $projectId)->with(array('users' => function ($query) {
             $query->orderby('role', 'asc');
         }));
         return $members->get();
@@ -58,9 +56,8 @@ class ProjectRepository extends BaseRepository implements InterfaceProjectReposi
         return $this->project->create($data);
     }
 
-    public function update($params, $data = [])
+    public function update($id, $data = [])
     {
-        $id = $params["id"];
         $record = $this->project->findOrFail($id);
 
         return $record->update($data);
@@ -78,9 +75,8 @@ class ProjectRepository extends BaseRepository implements InterfaceProjectReposi
         return $product->first();
     }
 
-    public function find($params)
+    public function find($id)
     {
-        $id = $params["id"];
         return $this->project->find($id);
     }
 }

@@ -28,13 +28,13 @@ class UserController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function filterUser(Request $request)
+    public function index(Request $request)
     {
         $users = $this->userRepository->filter($request->all());
         return $this->sendSuccess(__('message.LIST'), $users, $this->resCode::OK);
     }
 
-    public function allUser(Request $request)
+    public function getUserOptions(Request $request)
     {
         $users = $this->userRepository->allNotIn($request->all());
         return $this->sendSuccess(__('message.LIST'), $users, $this->resCode::OK);
@@ -46,17 +46,13 @@ class UserController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function register(UserPostRequest $request)
+    public function store(UserPostRequest $request)
     {
-        $name = $request->name;
-        $username = $request->username;
-        $password = $request->password;
-        $role = $request->role;
         $user = $this->userRepository->create([
-            'name' => $name,
-            'username' => $username,
-            'password' => Hash::make($password),
-            'role' => $role
+            'name' => $request->name,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'role' => $request->role
         ]);
         return $this->sendSuccess(__('message.CREATED'), $user, $this->resCode::OK);
 
@@ -70,11 +66,9 @@ class UserController extends BaseController
      */
     public function update($id, UserPutRequest $request)
     {
-        $name = $request->name;
-        $role = $request->role;
         $user = $this->userRepository->update($id, [
-            'name' => $name,
-            'role' => $role,
+            'name' => $request->name,
+            'role' => $request->role,
         ]);
         return $this->sendSuccess(__('message.UPDATED'), $user, $this->resCode::OK);
 
@@ -118,7 +112,7 @@ class UserController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function delete($id)
+    public function destroy($id)
     {
         $user = $this->userRepository->delete($id);
         return $this->sendSuccess(__('message.DELETED'), '', $this->resCode::OK);

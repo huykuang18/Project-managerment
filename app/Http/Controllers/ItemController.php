@@ -22,9 +22,9 @@ class ItemController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function getItem(Request $request)
+    public function index(Request $request)
     {
-        $items = $this->itemRepository->getFromProject($request->all());
+        $items = $this->itemRepository->getItems($request->all());
         return $this->sendSuccess(__('message.LIST'), $items, ResponseCode::OK);
     }
 
@@ -34,16 +34,13 @@ class ItemController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function createItem($project_id, ItemPostRequest $request)
+    public function store(ItemPostRequest $request)
     {
-        $name = $request->name;
-        $order = $request->order;
-        $parent_id = $request->parent_id;
         $item = $this->itemRepository->create([
-            'name' => $name,
-            'order' => $order,
-            'parent_id' => $parent_id,
-            'project_id' => $project_id
+            'name' => $request->name,
+            'order' => $request->order,
+            'parent_id' => $request->parent_id,
+            'project_id' => $request->project_id
         ]);
         return $this->sendSuccess(__('message.CREATED'), $item, ResponseCode::OK);
     }
@@ -56,13 +53,10 @@ class ItemController extends BaseController
      */
     public function update(ItemPostRequest $request)
     {
-        $name = $request->name;
-        $order = $request->order;
-        $parent_id = $request->parent_id;
         $item = $this->itemRepository->update($request->all(), [
-            'name' => $name,
-            'order' => $order,
-            'parent_id' => $parent_id
+            'name' => $request->name,
+            'order' => $request->order,
+            'parent_id' => $request->parent_id
         ]);
         return $this->sendSuccess(__('message.UPDATED'), $item, ResponseCode::OK);
     }
@@ -73,7 +67,7 @@ class ItemController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function delete($id)
+    public function destroy($id)
     {
         $item = $this->itemRepository->delete($id);
         return $this->sendSuccess(__('message.DELETED'),'', ResponseCode::OK);

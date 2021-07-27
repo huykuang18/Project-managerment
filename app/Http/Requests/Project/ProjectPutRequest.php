@@ -30,26 +30,4 @@ class ProjectPutRequest extends FormRequest
             'date_end' => 'required',
         ];
     }
-
-    public function attributes()
-    {
-        return [
-            'project_name' => 'Tên dự án',
-            'description' => 'Mô tả dự án',
-            'date_start' => 'Ngày bắt đầu',
-            'date_end' => 'Ngày kết thúc',
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'required' => ':attribute không được để trống'
-        ];
-    }
 }
