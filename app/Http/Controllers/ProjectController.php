@@ -54,13 +54,12 @@ class ProjectController extends BaseController
      */
     public function createProject(ProjectPostRequest $request)
     {
-        $validated = $request->validated();
-        $project_name = $validated["project_name"];
+        $project_name = $request->project_name;
         $manager = Auth::id();
-        $customer = $validated["customer"];
-        $description = $validated["description"];
-        $date_start = $validated["date_start"];
-        $date_end = $validated["date_end"];
+        $customer = $request->customer;
+        $description = $request->description;
+        $date_start = $request->date_start;
+        $date_end = $request->date_end;
         $intend_time = round((strtotime($date_end) - strtotime($date_start)) / (30 * 60 * 60 * 24), 0);
         $project = $this->projectRepository->create([
             'project_name' => $project_name,
@@ -86,11 +85,10 @@ class ProjectController extends BaseController
      */
     public function update(ProjectPutRequest $request)
     {
-        $validated = $request->validated();
-        $project_name = $validated["project_name"];
-        $description = $validated["description"];
-        $date_start = $validated["date_start"];
-        $date_end = $validated["date_end"];
+        $project_name = $request->project_name;
+        $description = $request->description;
+        $date_start = $request->date_start;
+        $date_end = $request->date_end;
         $intend_time = round((strtotime($date_end) - strtotime($date_start)) / (30 * 60 * 60 * 24), 0);
         $project = $this->projectRepository->update($request->all(), [
             'project_name' => $project_name,
@@ -113,7 +111,7 @@ class ProjectController extends BaseController
         $user = $this->userRepository->find(Auth::id());
         $user->projects()->detach($id);
         $project = $this->projectRepository->delete($id);
-        return $this->sendSuccess(__('message.DELETED'), $project, ResponseCode::OK);
+        return $this->sendSuccess(__('message.DELETED'), '', ResponseCode::OK);
     }
 
     /**

@@ -9,16 +9,16 @@ class Item extends Model
 {
     use HasFactory;
     protected $table = 'items';
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'project_id',
+        'parent_id',
+        'order'
+    ];
 
     public function issue()
     {
         return $this->hasMany(Issue::class);
-    }
-
-    public function module()
-    {
-        return $this->belongsTo(Module::class);
     }
 
     public function project()

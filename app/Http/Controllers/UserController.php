@@ -48,11 +48,10 @@ class UserController extends BaseController
      */
     public function register(UserPostRequest $request)
     {
-        $validated = $request->validated();
-        $name = $validated["name"];
-        $username = $validated["username"];
-        $password = $validated["password"];
-        $role = $validated["role"];
+        $name = $request->name;
+        $username = $request->username;
+        $password = $request->password;
+        $role = $request->role;
         $user = $this->userRepository->create([
             'name' => $name,
             'username' => $username,
@@ -71,9 +70,8 @@ class UserController extends BaseController
      */
     public function update($id, UserPutRequest $request)
     {
-        $validated = $request->validated();
-        $name = $validated["name"];
-        $role = $validated["role"];
+        $name = $request->name;
+        $role = $request->role;
         $user = $this->userRepository->update($id, [
             'name' => $name,
             'role' => $role,
@@ -123,7 +121,7 @@ class UserController extends BaseController
     public function delete($id)
     {
         $user = $this->userRepository->delete($id);
-        return $this->sendSuccess(__('message.DELETED'), $user, $this->resCode::OK);
+        return $this->sendSuccess(__('message.DELETED'), '', $this->resCode::OK);
     }
 
     /**
