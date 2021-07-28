@@ -36,26 +36,19 @@ export async function getUsers(query) {
   return data
 }
 
-export async function getUserOptions(project_id) {
+export async function getUserOptions(projectId) {
   const data = await request({
     url: '/users/all',
     method: 'get',
-    params: { project_id }
+    params: { projectId }
   })
   return data
 }
 
-export async function deleteUser(id) {
-  const data = await request({
-    url: '/user/delete/' + id,
-    method: 'delete'
-  })
-  return data
-}
 
 export async function createUser(params) {
   const data = await request({
-    url: '/register',
+    url: '/users',
     method: 'post',
     data: {
       name: params.name,
@@ -70,12 +63,20 @@ export async function createUser(params) {
 
 export async function updateUser(id, params) {
   const data = await request({
-    url: '/user/update/' + id,
+    url: '/users/' + id,
     method: 'put',
     data: {
       name: params.name,
       role: params.role
     }
+  })
+  return data
+}
+
+export async function deleteUser(id) {
+  const data = await request({
+    url: '/users/' + id,
+    method: 'delete'
   })
   return data
 }

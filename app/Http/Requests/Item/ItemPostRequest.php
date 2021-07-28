@@ -30,24 +30,4 @@ class ItemPostRequest extends FormRequest
         ];
     }
 
-    public function attributes()
-    {
-        return [
-            'name' => 'Tên mục',
-            'order' => 'Độ ưu tiên',
-            'parent_id' => 'Mục chứa'
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'required' => ':attribute không được để trống'
-        ];
-    }
 }

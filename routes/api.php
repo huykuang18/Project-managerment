@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,30 +14,28 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('/greeting/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'vi'])) {
+    abort(400);
+    }
+    
+    App::setLocale($locale);
+
+    });
 
 Route::group(['namespace' => 'App\Http\Controllers',],function(){
     /**User */
-    Route::post('register', 'UserController@register');
-    Route::put('user/update/{id}', 'UserController@update');
-    Route::delete('user/delete/{id}', 'UserController@delete');
     Route::post('login', 'UserController@login');
-    Route::get('users', 'UserController@filterUser');
-    Route::get('users/all', 'UserController@allUser');
+    Route::get('users/all', 'UserController@getUserOptions');
+    Route::apiResource('users', 'UserController');
 
     /**Project */
-    Route::get('projects', 'ProjectController@getProject');
-    Route::post('project/create', 'ProjectController@createProject');
-    Route::put('project/update', 'ProjectController@update');
-    Route::delete('project/delete/{id}', 'ProjectController@delete');
-    Route::get('project/members', 'ProjectController@getMember');
-    Route::post('project/member/add', 'ProjectController@addMember');
-    Route::delete('project/member/delete/{id}', 'ProjectController@removeMember');
+    Route::apiResource('projects', 'ProjectController');
+    Route::apiResource('projects.members', 'MemberController',['except' => ['destroy']])->shallow();
+    Route::delete('projects/{project}/members/{member}', 'MemberController@remove');
 
     /**Item */
-    Route::get('items', 'ItemController@getItem');
-    Route::post('item/create/{project_id}', 'ItemController@createItem');
-    Route::put('item/update', 'ItemController@update');
-    Route::delete('item/delete/{id}', 'ItemController@delete');
+    Route::apiResource('items', 'ItemController');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'App\Http\Controllers'], function () {

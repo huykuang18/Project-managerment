@@ -28,24 +28,4 @@ class UserPutRequest extends FormRequest
             'role' => 'required'
         ];
     }
-
-    public function attributes()
-    {
-        return [
-            'name' => 'Họ tên',
-            'role' => 'Vai trò'
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'required' => ':attribute không được để trống'
-        ];
-    }
 }

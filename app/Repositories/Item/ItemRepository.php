@@ -19,14 +19,14 @@ class ItemRepository extends BaseRepository implements InterfaceItemRepository
     return $this->item->get();
   }
 
-  public function getFromProject($params)
+  public function getItems($params)
   {
-    $project_id = $params["project_id"];
-    $parent_id = isset($params["parent_id"]) ?? null;
-    if ($parent_id) {
-      $items = $this->item::where([['project_id', $project_id], ['parent_id', $parent_id]]);
+    $projectId = $params["project_id"];
+    $parentId = isset($params["parent_id"]) ?? null;
+    if ($parentId) {
+      $items = $this->item::where([['project_id', $projectId], ['parent_id', $parentId]]);
     } else {
-      $items = $this->item::where([['project_id', $project_id], ['parent_id', 0]]);
+      $items = $this->item::where([['project_id', $projectId], ['parent_id', 0]]);
     }
 
     return $items->orderBy('order', 'asc')->get();

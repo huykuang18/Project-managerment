@@ -506,7 +506,7 @@ export default {
       this.list.splice(index, 1)
     },
     handleRemove(row, id, index) {
-      removeMember(row.id, id).then((response) => {
+      removeMember(id, row.id).then((response) => {
         this.$notify({
           title: response.message,
           type: 'success',

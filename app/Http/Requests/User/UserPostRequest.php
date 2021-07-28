@@ -30,29 +30,4 @@ class UserPostRequest extends FormRequest
             'repassword' => 'required|same:password',
         ];
     }
-
-    public function attributes()
-    {
-        return [
-            'username' => 'Tên đăng nhập',
-            'name' => 'Họ tên',
-            'password' => 'Mật khẩu',
-            'repassword' => 'Xác nhận mật khẩu'
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'required' => ':attribute không được để trống',
-            'unique' => ':attribute đã tồn tại',
-            'password.min' => 'mật khẩu không được ít hơn 6 ký tự',
-            'repassword.same' => 'xác nhận mật khẩu không khớp'
-        ];
-    }
 }
