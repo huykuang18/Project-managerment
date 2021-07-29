@@ -25,4 +25,9 @@ class Item extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function children()
+    {
+        return $this->hasMany(Item::class,'parent_id','id');
+    }
 }

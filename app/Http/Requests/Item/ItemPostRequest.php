@@ -25,8 +25,7 @@ class ItemPostRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'order' => 'required',
-            'parent_id' => 'required'
+            'order' => 'required'
         ];
     }
 

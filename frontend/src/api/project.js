@@ -9,7 +9,6 @@ export async function getProjects(query) {
   return data
 }
 
-
 export async function createProject(params) {
   const data = await request({
     url: '/projects',
@@ -27,7 +26,7 @@ export async function createProject(params) {
 
 export async function updateProject(id, params) {
   const data = await request({
-    url: '/projects/'+id,
+    url: '/projects/' + id,
     method: 'put',
     data: {
       project_name: params.project_name,
@@ -49,7 +48,7 @@ export async function deleteProject(id) {
 
 export async function getMembers(projectId) {
   const data = await request({
-    url: '/projects/'+projectId+'/members',
+    url: '/projects/' + projectId + '/members',
     method: 'get'
   })
   return data
@@ -57,7 +56,7 @@ export async function getMembers(projectId) {
 
 export async function addMember(param, projectId) {
   const data = await request({
-    url: '/projects/'+projectId+'/members',
+    url: '/projects/' + projectId + '/members',
     method: 'post',
     data: {
       user_id: param.user_id
@@ -68,7 +67,7 @@ export async function addMember(param, projectId) {
 
 export async function removeMember(projectId, memberId) {
   const data = await request({
-    url: '/projects/'+projectId+'/members/' + memberId,
+    url: '/projects/' + projectId + '/members/' + memberId,
     method: 'delete'
   })
   return data
