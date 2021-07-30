@@ -166,7 +166,15 @@ return [
 
         /**Item */
         'order' => 'Độ ưu tiên',
-        'parent_id' => 'Mục chứa'
+        'parent_id' => 'Mục chứa',
+
+        /**Issue */
+        'issue_name' => 'Tên công việc',
+        'status' => 'Trạng thái công việc',
+        'user_id' => 'Người đảm nhận',
+        'item_id' => 'Mục',
+        'deadline' => 'Thời hạn',
+        'priority' => 'Mức ưu tiên'
     ],
 
 ];

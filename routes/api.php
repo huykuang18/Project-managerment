@@ -36,6 +36,9 @@ Route::group(['namespace' => 'App\Http\Controllers',],function(){
 
     /**Item */
     Route::apiResource('items', 'ItemController');
+
+    /**Issue */
+    Route::apiResource('issues', 'IssueController');
 });
 
 Route::group(['middleware' => 'jwt.auth', 'namespace' => 'App\Http\Controllers'], function () {
