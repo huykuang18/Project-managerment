@@ -51,9 +51,9 @@ class ItemController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function update(ItemPostRequest $request)
+    public function update($id, ItemPostRequest $request)
     {
-        $item = $this->itemRepository->update($request->all(), [
+        $item = $this->itemRepository->update($id, [
             'name' => $request->name,
             'order' => $request->order,
             'parent_id' => $request->parent_id

@@ -56,6 +56,12 @@ const state = {
       component: '',
       name: 'Project',
       meta: { title: 'Quản lý dự án tham gia', icon: 'skill' }
+    },
+    {
+      path: 'item',
+      component: '',
+      name: 'Item',
+      meta: { title: 'Các mục trong dự án', icon: 'clipboard' }
     }
   ],
   addRoutes: []

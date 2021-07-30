@@ -16,7 +16,7 @@ class UserRepository extends BaseRepository implements InterfaceUserRepository
 
     public function allNotIn($params)
     {
-        $projectId = $params["project_id"];
+        $projectId = $params["projectId"];
         $users = $this->user::join('project_user','users.id','=','project_user.user_id')->where('project_id',$projectId)->get('users.id');
         return $this->user::whereNotIn('id',$users)->where('role','!=','admin')->orderBy('role','asc')->orderBy('username','asc')->get();
     }

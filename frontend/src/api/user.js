@@ -45,7 +45,6 @@ export async function getUserOptions(projectId) {
   return data
 }
 
-
 export async function createUser(params) {
   const data = await request({
     url: '/users',

@@ -149,6 +149,20 @@ export const constantRoutes = [
         meta: { title: 'Dự án của tôi', icon: 'skill' }
       }
     ]
+  },
+  {
+    path: '/item',
+    component: Layout,
+    redirect: '/item/index',
+    hidden: false,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/item/index'),
+        name: 'Items',
+        meta: { title: 'Danh mục', icon: 'clipboard' }
+      }
+    ]
   }
 ]
 

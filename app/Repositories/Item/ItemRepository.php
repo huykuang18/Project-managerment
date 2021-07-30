@@ -22,14 +22,11 @@ class ItemRepository extends BaseRepository implements InterfaceItemRepository
   public function getItems($params)
   {
     $projectId = $params["project_id"];
-    $parentId = isset($params["parent_id"]) ?? null;
-    if ($parentId) {
-      $items = $this->item::where([['project_id', $projectId], ['parent_id', $parentId]]);
-    } else {
-      $items = $this->item::where([['project_id', $projectId], ['parent_id', 0]]);
-    }
+    $items = $this->item::where([['project_id', $projectId], ['parent_id', null]])->with(array('children' => function ($query) {
+      $query->orderby('order', 'asc');
+    }));
 
-    return $items->orderBy('order', 'asc')->get();
+    return $items->get();
   }
 
   public function create($data = [])
@@ -37,9 +34,8 @@ class ItemRepository extends BaseRepository implements InterfaceItemRepository
     return $this->item->create($data);
   }
 
-  public function update($params, $data = [])
+  public function update($id, $data = [])
   {
-    $id = $params["id"];
     $record = $this->item->findOrFail($id);
 
     return $record->update($data);
@@ -48,7 +44,7 @@ class ItemRepository extends BaseRepository implements InterfaceItemRepository
   public function delete($id)
   {
     $item = $this->item->findOrFail($id);
-    if ($item["parent_id"] !== 0 ) {
+    if ($item["parent_id"] !== null ) {
       return $this->item->destroy($id);
     } else {
       $this->item::where('parent_id',$id)->delete();
