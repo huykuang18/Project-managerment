@@ -7,6 +7,8 @@ interface InterfaceIssueRepository extends InterfaceBaseRepository
 {
     public function all();
 
+    public function index($params);
+
     public function create($data = []);
 
     public function update($id, $data = []);

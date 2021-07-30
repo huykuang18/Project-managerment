@@ -9,7 +9,13 @@ class Issue extends Model
 {
     use HasFactory;
     protected $table = 'issues';
-    protected $fillable = [];
+    protected $fillable = [
+        'issue_name',
+        'user_id',
+        'item_id',
+        'deadline',
+        'priority'
+    ];
 
     public function item()
     {
