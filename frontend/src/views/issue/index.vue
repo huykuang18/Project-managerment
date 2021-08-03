@@ -4,7 +4,7 @@
       <el-form>
         <el-form-item>
           <el-select
-            v-model="listItemQuery.project_id"
+            v-model="listIssueQuery.project_id"
             class="filter-item"
             placeholder="Chọn dự án"
             name="project_id"
@@ -20,104 +20,88 @@
             class="filter-item"
             type="success"
             icon="el-icon-info"
-            @click="handleShowItems()"
+            @click="handleShowIssues()"
           >
           </el-button>
         </el-form-item>
       </el-form>
-      <el-button
-        class="filter-item"
-        type="primary"
-        icon="el-icon-plus"
-        @click="handleCreate()"
-      >
-        Thêm danh mục
-      </el-button>
     </div>
 
     <el-table
       :key="tableKey"
-      v-loading="listItemLoading"
-      :data="listParentItem"
+      v-loading="listIssueLoading"
+      :data="listIssue"
       border
       fit
       highlight-current-row
       style="width: 100%"
       @sort-change="sortChange"
     >
-      <el-table-column
-        label="Thao tác"
-        width="200"
-        class-name="small-padding fixed-width"
-      >
-        <template slot-scope="{ row }">
-          <el-button
-            size="mini"
-            type="primary"
-            icon="el-icon-edit"
-            @click="handleUpdate(row)"
-          >
-            Sửa
-          </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            icon="el-icon-delete"
-            @click="handleDelete(row)"
-          >
-            Xóa
-          </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column label="ID" align="center" width="60">
+      <el-table-column label="ID" align="center" width="50">
         <template slot-scope="{ row }">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Độ ưu tiên" width="100">
+      <el-table-column label="Tên mục" width="110">
         <template slot-scope="{ row }">
-          <el-tag>{{ row.order }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="Mục cha" width="200">
-        <template slot-scope="{ row }">
-          <span class="link-type" @click="handleUpdate(row)">
+          <span>
             {{ row.name }}
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="Mục con" width="540">
+      <el-table-column label="Danh sách công việc" min-width="850">
         <el-table
           :key="tableKey"
           slot-scope="{ row }"
-          v-loading="listItemLoading"
-          :data="row.children"
+          v-loading="listIssueLoading"
+          :data="row.issue"
           border
           fit
           highlight-current-row
           style="width: 100%"
           @sort-change="sortChange"
         >
-          <el-table-column label="ID" align="center" width="68">
+          <el-table-column label="ID" align="center" width="50">
             <template slot-scope="{ row }">
               <span>{{ row.id }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Độ ưu tiên" width="100">
+          <el-table-column label="Ưu tiên" width="78">
             <template slot-scope="{ row }">
-              <el-tag>{{ row.order }}</el-tag>
+              <el-tag>{{ row.priority }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Tên" width="200">
+          <el-table-column label="Tên công việc" min-width="200">
             <template slot-scope="{ row }">
               <span class="link-type" @click="handleUpdate(row)">
-                {{ row.name }}
+                {{ row.issue_name }}
               </span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Người được giao" width="150">
+            <template slot-scope="{ row }">
+              <span>
+                {{ row.users.username }}
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Hạn cuối" width="100">
+            <template slot-scope="{ row }">
+              <span>
+                {{ row.deadline }}
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Trạng thái" width="90">
+            <template slot-scope="{ row }">
+              <el-tag :type="row.status | statusFilter">
+                {{ row.status }}
+              </el-tag>
             </template>
           </el-table-column>
           <el-table-column
             label="Thao tác"
-            width="150"
+            width="160"
             class-name="small-padding fixed-width"
           >
             <template slot-scope="{ row }">
@@ -141,6 +125,22 @@
           </el-table-column>
         </el-table>
       </el-table-column>
+      <el-table-column
+        label="Thao tác"
+        width="100"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="{ row }">
+          <el-button
+            size="mini"
+            type="primary"
+            icon="el-icon-plus"
+            @click="handleCreate(row)"
+          >
+            Thêm
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <el-dialog
@@ -156,30 +156,33 @@
         label-width="150px"
         style="width: 400px margin-left: 50px"
       >
-        <el-form-item label="Mục cha">
+        <el-form-item label="Người được giao">
           <el-select
-            v-model="temp.parent_id"
+            v-model="temp.user_id"
             class="filter-item"
-            placeholder="Chọn mục cha"
-            name="parent_id"
+            placeholder="Chọn người thực hiện"
+            name="user_id"
           >
             <el-option
-              v-for="item in listParentItem"
-              :key="item.id"
-              :label="item.id + ' --- ' + item.name"
-              :value="item.id"
+              v-for="item in listMember"
+              :key="item.user_id"
+              :label="item.role + ' --- ' + item.name"
+              :value="item.user_id"
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Tên mục" prop="name">
-          <el-input v-model="temp.name" name="name" />
+        <el-form-item label="Tên công việc" prop="issue_name">
+          <el-input v-model="temp.issue_name" name="issue_name" />
         </el-form-item>
-        <el-form-item label="Độ ưu tiên" prop="order">
-          <el-input v-model="temp.order" type="number" name="name" />
+        <el-form-item label="Độ ưu tiên" prop="priority">
+          <el-input v-model="temp.priority" type="number" name="priority" />
+        </el-form-item>
+        <el-form-item label="Thời hạn" prop="deadline">
+          <el-input v-model="temp.deadline" type="date" name="deadline" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false"> Cancel </el-button>
+        <el-button @click="dialogFormVisible = false"> Hủy bỏ </el-button>
         <el-button type="primary" @click="createData()"> Xác nhận </el-button>
       </div>
     </el-dialog>
@@ -197,40 +200,48 @@
         label-width="150px"
         style="width: 400px margin-left: 50px"
       >
-        <el-form-item label="Tên mục" prop="name">
-          <el-input v-model="temp.name" name="name" />
-        </el-form-item>
-        <el-form-item label="Độ ưu tiên" prop="order">
-          <el-input v-model="temp.order" type="number" name="name" />
-        </el-form-item>
-        <el-form-item label="Mục cha" prop="name">
+        <el-form-item label="Người được giao">
           <el-select
-            v-if="temp.parent_id !== null"
-            v-model="temp.parent_id"
+            v-model="temp.user_id"
             class="filter-item"
-            placeholder="Chọn mục cha"
-            name="parent_id"
+            placeholder="Chọn người thực hiện"
+            name="user_id"
           >
             <el-option
-              v-for="item in listParentItem"
-              :key="item.id"
-              :label="item.id + ' --- ' + item.name"
-              :value="item.id"
+              v-for="item in listMember"
+              :key="item.user_id"
+              :label="item.role + ' --- ' + item.name"
+              :value="item.user_id"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item label="Tên công việc" prop="issue_name">
+          <el-input v-model="temp.issue_name" name="issue_name" />
+        </el-form-item>
+        <el-form-item label="Độ ưu tiên" prop="priority">
+          <el-input v-model="temp.priority" type="number" name="priority" />
+        </el-form-item>
+        <el-form-item label="Thời hạn" prop="deadline">
+          <el-input v-model="temp.deadline" type="date" name="deadline" />
+        </el-form-item>
+        <el-form-item label="Trạng thái">
           <el-select
-            v-else
-            v-model="temp.parent_id"
+            v-model="temp.status"
             class="filter-item"
-            placeholder="Chọn mục cha"
-            name="parent_id"
-            disabled
+            placeholder="Trạng thái công việc"
+            name="status"
           >
+            <el-option
+              v-for="item in calendarRoleOptions"
+              :key="item.key"
+              :label="item.value"
+              :value="item.value"
+            />
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false"> Cancel </el-button>
+        <el-button @click="dialogFormVisible = false"> Hủy bỏ </el-button>
         <el-button type="primary" @click="updateData()"> Xác nhận </el-button>
       </div>
     </el-dialog>
@@ -247,15 +258,20 @@
 
 <script>
 import { getProjects } from '@/api/project'
-import { getItems, updateItem, createItem, deleteItem } from '@/api/item'
+import { getIssues, updateIssue, createIssue, deleteIssue, memberOptions } from '@/api/issue'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
-const calendarRoleOptions = []
+const calendarRoleOptions = [
+  { key: 'OP', value: 'open' },
+  { key: 'IP', value: 'inprogress' },
+  { key: 'RS', value: 'resolved' },
+  { key: 'CL', value: 'closed' }
+]
 
 const calendarRoleKeyValue = calendarRoleOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name
+  acc[cur.key] = cur.value
   return acc
 }, {})
 
@@ -266,9 +282,10 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        open: 'info',
+        inprogress: 'warning',
+        resolved: 'success',
+        closed: 'danger'
       }
       return statusMap[status]
     },
@@ -280,34 +297,32 @@ export default {
     return {
       tableKey: 0,
       list: null,
-      listParentItem: null,
+      listMember: null,
+      listIssue: null,
       detail: null,
       total: 0,
       listLoading: false,
       detailLoading: true,
-      listItemLoading: false,
+      listIssueLoading: false,
+      calendarRoleOptions,
       userOptions: null,
       listQuery: {
         project_name: '',
         sort: '+id'
       },
-      listItemQuery: {
+      listIssueQuery: {
         page: 1,
         limit: 10,
         project_id: ''
       },
-      calendarRoleOptions,
-      sortOptions: [
-        { label: 'ID Ascending', key: '+id' },
-        { label: 'ID Descending', key: '-id' }
-      ],
-      showReviewer: false,
       temp: {
         id: undefined,
         importance: 1,
-        name: '',
-        order: '',
-        parent_id: '',
+        issue_name: '',
+        priority: '',
+        user_id: '',
+        item_id: '',
+        status: '',
         project_id: ''
       },
       dialogFormVisible: false,
@@ -319,8 +334,10 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        name: [{ required: true, message: 'Tên mục không được để trống' }],
-        order: [{ required: true, message: 'Hãy chọn mức độ ưu tiên' }]
+        issue_name: [{ required: true, message: 'Tên công việc không được để trống' }],
+        priority: [{ required: true, message: 'Mức độ ưu tiên không được để trống' }],
+        user_id: [{ required: true, message: 'Người được giao không được để trống' }],
+        deadline: [{ required: true, message: 'Thời hạn không được để trống' }]
       },
       downloadLoading: false
     }
@@ -339,14 +356,14 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    handleShowItems() {
-      this.listItemLoading = false
-      getItems(this.listItemQuery).then((response) => {
-        this.listParentItem = response.data
+    handleShowIssues() {
+      this.listIssueLoading = false
+      getIssues(this.listIssueQuery).then((response) => {
+        this.listIssue = response.data
         this.total = response.data.length
         // Just to simulate the time of the request
         setTimeout(() => {
-          this.listItemLoading = false
+          this.listIssueLoading = false
         }, 1.5 * 1000)
       })
     },
@@ -372,14 +389,20 @@ export default {
       this.temp = {
         id: undefined,
         importance: 1,
-        name: '',
-        order: '',
-        parent_id: '',
+        issue_name: '',
+        priority: '',
+        user_id: '',
+        status: '',
         project_id: ''
       }
     },
-    handleCreate() {
+    handleCreate(row) {
+      memberOptions(this.listIssueQuery.project_id).then((response) => {
+        this.listMember = response.data
+      })
       this.resetTemp()
+      this.temp.item_id = row.id
+      this.temp.user_id = this.listMember['0']['user_id']
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -390,7 +413,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.temp.id = parseInt(Math.random() * 100) + 1024
-          createItem(this.listItemQuery.project_id, this.temp).then((response) => {
+          createIssue(this.temp).then((response) => {
             this.dialogFormVisible = false
             this.$notify({
               title: response.message,
@@ -399,14 +422,18 @@ export default {
             })
             this.rules = response.data
           })
-          getItems(this.listItemQuery).then((response) => {
-            this.listParentItem = response.data
-            this.listItemLoading = false
+          getIssues(this.listIssueQuery).then((response) => {
+            this.listIssue = response.data
+            this.listIssueLoading = false
           })
         }
       })
     },
     handleUpdate(row) {
+      memberOptions(this.listIssueQuery.project_id).then((response) => {
+        this.listMember = response.data
+      })
+      this.temp.item_id = row.id
       this.temp = Object.assign({}, row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -418,7 +445,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          updateItem(this.temp.id, this.temp.project_id, tempData).then((response) => {
+          updateIssue(this.temp.id, tempData).then((response) => {
             this.dialogFormVisible = false
             this.$notify({
               title: response.message,
@@ -426,24 +453,24 @@ export default {
               duration: 2000
             })
           })
-          getItems(this.listItemQuery).then((response) => {
-            this.listParentItem = response.data
-            this.listItemLoading = false
+          getIssues(this.listIssueQuery).then((response) => {
+            this.listIssue = response.data
+            this.listIssueLoading = false
           })
         }
       })
     },
     handleDelete(row) {
-      deleteItem(row.id).then((response) => {
+      deleteIssue(row.id).then((response) => {
         this.$notify({
           title: response.message,
           type: 'success',
           duration: 2000
         })
       })
-      getItems(this.listItemQuery).then((response) => {
-        this.listParentItem = response.data
-        this.listItemLoading = false
+      getIssues(this.listIssueQuery).then((response) => {
+        this.listIssue = response.data
+        this.listIssueLoading = false
       })
     },
     formatJson(filterVal) {

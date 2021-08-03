@@ -27,7 +27,6 @@ class IssuePutRequest extends FormRequest
             'issue_name' => 'required',
             'status' => 'required',
             'user_id' => 'required',
-            'item_id' => 'required',
             'deadline' => 'required',
             'priority' => 'required'
         ];

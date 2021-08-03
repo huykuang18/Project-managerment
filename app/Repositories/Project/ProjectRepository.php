@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectRepository extends BaseRepository implements InterfaceProjectRepository
 {
-    protected $project;
-    protected $user;
+    private $project;
+    private $user;
 
     public function __construct(Project $project, User $user)
     {
@@ -45,9 +45,9 @@ class ProjectRepository extends BaseRepository implements InterfaceProjectReposi
 
     public function detail($projectId)
     {
-        $members = $this->project->where('id', $projectId)->with(array('users' => function ($query) {
+        $members = $this->project->where('id', $projectId)->with(['users' => function ($query) {
             $query->orderby('role', 'asc');
-        }));
+        }]);
         return $members->get();
     }
 
@@ -79,4 +79,6 @@ class ProjectRepository extends BaseRepository implements InterfaceProjectReposi
     {
         return $this->project->find($id);
     }
+
+    
 }

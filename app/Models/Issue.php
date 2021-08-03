@@ -14,6 +14,7 @@ class Issue extends Model
         'user_id',
         'item_id',
         'deadline',
+        'status',
         'priority'
     ];
 
@@ -22,8 +23,8 @@ class Issue extends Model
         return $this->belongsTo(Item::class);
     }
 
-    public function creater()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id','id');
     }
 }

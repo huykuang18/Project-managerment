@@ -33,6 +33,7 @@ Route::group(['namespace' => 'App\Http\Controllers',],function(){
     Route::apiResource('projects', 'ProjectController');
     Route::apiResource('projects.members', 'MemberController',['except' => ['destroy']])->shallow();
     Route::delete('projects/{project}/members/{member}', 'MemberController@remove');
+    Route::get('member/options', 'IssueController@getMemberOptions');
 
     /**Item */
     Route::apiResource('items', 'ItemController');

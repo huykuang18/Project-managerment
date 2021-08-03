@@ -27,7 +27,7 @@ class IssuePostRequest extends FormRequest
             'issue_name' => 'required',
             'user_id' => 'required',
             'item_id' => 'required',
-            'deadline' => 'required|after:' . date('Y-m-d'),
+            'deadline' => 'required',
             'priority' => 'required'
         ];
         

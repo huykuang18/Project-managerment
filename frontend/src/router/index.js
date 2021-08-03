@@ -163,6 +163,20 @@ export const constantRoutes = [
         meta: { title: 'Danh mục', icon: 'clipboard' }
       }
     ]
+  },
+  {
+    path: '/issue',
+    component: Layout,
+    redirect: '/issue/index',
+    hidden: false,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/issue/index'),
+        name: 'Issues',
+        meta: { title: 'Công việc', icon: 'nested' }
+      }
+    ]
   }
 ]
 
