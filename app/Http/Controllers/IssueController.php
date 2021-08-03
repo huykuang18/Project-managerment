@@ -81,4 +81,11 @@ class IssueController extends BaseController
 
         return $this->sendSuccess(__('message.DELETED'), '', ResponseCode::OK);
     }
+
+    public function getMemberOptions(Request $request)
+    {
+        $members = $this->issueRepository->members($request->all());
+
+        return $this->sendSuccess(__('message.LIST'), $members, ResponseCode::OK);
+    }
 }

@@ -92,7 +92,7 @@
       </el-table-column>
       <el-table-column label="Vai trò" class-name="status-col" width="100">
         <template slot-scope="{ row }">
-          <el-tag>
+          <el-tag :type="row.role | statusFilter">
             {{ row.role }}
           </el-tag>
         </template>
@@ -251,13 +251,13 @@ export default {
   components: { Pagination },
   directives: { waves },
   filters: {
-    statusFilter(status) {
+    statusFilter(role) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        admin: 'success',
+        developer: 'primary',
+        tester: 'info'
       }
-      return statusMap[status]
+      return statusMap[role]
     },
     typeFilter(role) {
       return calendarRoleKeyValue[role]

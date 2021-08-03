@@ -7,7 +7,7 @@ use App\Repositories\BaseRepository;
 
 class ItemRepository extends BaseRepository implements InterfaceItemRepository
 {
-  protected $item;
+  private $item;
 
   public function __construct(Item $item)
   {
@@ -22,9 +22,9 @@ class ItemRepository extends BaseRepository implements InterfaceItemRepository
   public function getItems($params)
   {
     $projectId = $params["project_id"];
-    $items = $this->item::where([['project_id', $projectId], ['parent_id', null]])->with(array('children' => function ($query) {
+    $items = $this->item::where([['project_id', $projectId], ['parent_id', null]])->with(['children' => function ($query) {
       $query->orderby('order', 'asc');
-    }));
+    }]);
 
     return $items->get();
   }

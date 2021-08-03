@@ -49,19 +49,25 @@ const state = {
       path: 'user',
       component: '',
       name: 'User',
-      meta: { title: 'Quản lý người dùng', icon: 'user' }
+      meta: { title: 'Người dùng', icon: 'user' }
     },
     {
       path: 'project',
       component: '',
       name: 'Project',
-      meta: { title: 'Quản lý dự án tham gia', icon: 'skill' }
+      meta: { title: 'Dự án tham gia', icon: 'skill' }
     },
     {
       path: 'item',
       component: '',
       name: 'Item',
-      meta: { title: 'Các mục trong dự án', icon: 'clipboard' }
+      meta: { title: 'Mục trong dự án', icon: 'clipboard' }
+    },
+    {
+      path: 'issue',
+      component: '',
+      name: 'Issue',
+      meta: { title: 'Công việc', icon: 'nested' }
     }
   ],
   addRoutes: []

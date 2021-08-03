@@ -66,9 +66,10 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        open: 'info',
+        inprogress: 'warning',
+        resolved: 'success',
+        closed: 'danger'
       }
       return statusMap[status]
     }
