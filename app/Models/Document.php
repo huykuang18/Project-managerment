@@ -9,10 +9,21 @@ class Document extends Model
 {
     use HasFactory;
     protected $table = 'documents';
-    protected $fillable = [];
+    protected $fillable = [
+        'project_id',
+        'filename',
+        'link',
+        'file',
+        'user_id'
+    ];
 
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
