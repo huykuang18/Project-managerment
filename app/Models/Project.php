@@ -31,7 +31,7 @@ class Project extends Model
         return $this->hasMany(Module::class);
     }
 
-    public function document()
+    public function documents()
     {
         return $this->hasMany(Document::class);
     }
